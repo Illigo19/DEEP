@@ -12,13 +12,13 @@
 #include <stdint.h>
 
 /**
- * @brief Écrit un UID accompagné d'une date dans la mémoire FLASH.
+ * @brief ï¿½crit un UID accompagnï¿½ d'une date dans la mï¿½moire FLASH.
  *
- * Combine un identifiant UID 64 bits et une date 8 bits, puis les écrit à
- * l'adresse indiquée par le curseur. Ensuite, le curseur est incrémenté.
+ * Combine un identifiant UID 64 bits et une date 8 bits, puis les ï¿½crit ï¿½
+ * l'adresse indiquï¿½e par le curseur. Ensuite, le curseur est incrï¿½mentï¿½.
  *
- * @param UID Identifiant 64 bits à stocker.
- * @param date Date 8 bits à associer à l'UID (format utilisateur défini).
+ * @param UID Identifiant 64 bits ï¿½ stocker.
+ * @param date Date 8 bits
  */
 void FLASH_write_UID(uint64_t UID, uint8_t date);
 

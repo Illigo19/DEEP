@@ -41,7 +41,7 @@
 #define USE_DAC				0
 
 /*------------------Afficheurs------------------*/
-#define USE_ILI9341			1 // écran TFT
+#define USE_ILI9341			1 // ï¿½cran TFT
 #if USE_ILI9341
 	#define USE_XPT2046			1
 	#define USE_FONT7x10		0
@@ -49,27 +49,27 @@
 	#define USE_FONT16x26		0
 #endif
 
-#define USE_EPAPER			0 // e-paper (écran basse consommation)
+#define USE_EPAPER			0 // e-paper (ï¿½cran basse consommation)
 #define USE_WS2812			0 // Matrice de led
 
 /*------------------Capteurs------------------*/
-#define USE_MPU6050			0 // Accéléromètre, Gyroscope
-#define USE_APDS9960		0 // Capteur de mouvements, présence, couleurs
-#define USE_BMP180			0 // Capteur de pression atmosphérique
-#define USE_BH1750FVI		0 // Capteur de luminosité ambiante
-#define USE_DHT11			0 // Capteur de température et d'humidité
-#define USE_DS18B20			0 // Sonde de température
+#define USE_MPU6050			0 // Accï¿½lï¿½romï¿½tre, Gyroscope
+#define USE_APDS9960		0 // Capteur de mouvements, prï¿½sence, couleurs
+#define USE_BMP180			0 // Capteur de pression atmosphï¿½rique
+#define USE_BH1750FVI		0 // Capteur de luminositï¿½ ambiante
+#define USE_DHT11			0 // Capteur de tempï¿½rature et d'humiditï¿½
+#define USE_DS18B20			0 // Sonde de tempï¿½rature
 #define USE_YX6300			0 // Lecteur MP3
 #define USE_MATRIX_KEYBOARD 0 // Clavier matriciel
-#define USE_HCSR04			0 // Télémetre à ultrason
+#define USE_HCSR04			0 // Tï¿½lï¿½metre ï¿½ ultrason
 #define USE_GPS				0 // GPS
 #define USE_LD19			0 // Lidar --> veuillez aussi activer USE_ILI9341, USE_XPT2046, USE_FONT7x10 et USE_FONT16x26 si vous voulez utiliser display_ld19.c
 #define USE_NFC03A1			0 // Shield NFC
-#define USE_VL53L0			0 // Télémetre laser de grande précision
+#define USE_VL53L0			0 // Tï¿½lï¿½metre laser de grande prï¿½cision
 #if USE_VL53L0
 	#define VL53L0X_I2C			I2C1
 	#define VL53_NB				1 // La version actuelle du driver ne peut traiter que 8 capteurs au maximum
-	//Vous devez définir ci dessous autant de lignes VL_x que le nombre indiqué ci-dessus avec x allant de 0 Ã  VL53_NB-1
+	//Vous devez dï¿½finir ci dessous autant de lignes VL_x que le nombre indiquï¿½ ci-dessus avec x allant de 0 Ã  VL53_NB-1
 	#define VL_0				GPIOA, GPIO_PIN_0 // Pin de reset
 	//#define VL_1				GPIOD, GPIO_PIN_3
 	//#define VL_2				GPIOE, GPIO_PIN_10
@@ -78,12 +78,12 @@
 /*------------------Expanders------------------*/
 #define USE_MCP23017		0 // GPIO expander qui communique en i2C
 #define USE_MCP23S17		0 // GPIO expander qui communique en SPI
-#define USE_SD_CARD			0 // Carte SD pour lire/écrire des fichiers
+#define USE_SD_CARD			0 // Carte SD pour lire/ï¿½crire des fichiers
 
 /*------------------Actionneurs------------------*/
 #define USE_MOTOR_DC		1
 
-/*------------------Périphériques------------------*/
+/*------------------Pï¿½riphï¿½riques------------------*/
 
 #if USE_MLX90614 || USE_MPU6050	|| USE_APDS9960	 || USE_BH1750FVI || USE_BMP180 || USE_MCP23017 || USE_VL53L0 // Liste des modules utilisants le pÃ©riphÃ©rique I2C
 	#define USE_I2C				1
@@ -94,7 +94,7 @@
 #endif
 #define I2C_TIMEOUT			5//ms
 
-#if USE_ILI9341 || USE_SD_CARD || USE_MCP23S17 || USE_EPAPER // Liste des modules utilisants le périphérique SPI
+#if USE_ILI9341 || USE_SD_CARD || USE_MCP23S17 || USE_EPAPER // Liste des modules utilisants le pï¿½riphï¿½rique SPI
 	#define USE_SPI				1
 #else
 	#ifndef USE_SPI
