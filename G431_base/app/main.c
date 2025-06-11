@@ -7,6 +7,9 @@
  *******************************************************************************
  */
 
+#include "stm32g4_sys.h"
+
+
 #include <capteurs.h>
 #include "config.h"
 #include "stm32g4_sys.h"
@@ -70,44 +73,56 @@ void process_ms(void)
   */
 int main(void)
 {
+	static state_e state;
+	static state_e previous_state;
+	bool_e entrance;
+	HAL_Init();
+	BSP_GPIO_enable();
+	BSP_UART_init(UART2_ID,115200);
+	BSP_SYS_set_std_usart(UART2_ID, UART2_ID, UART2_ID);
+	BSP_systick_add_callback_function(&process_ms);
+
 	while (1)
 	{
-		static state_e state = INIT;
-		static state_e previous_state = INIT;
-		bool_e entrance = (previous_state != state)?TRUE:FALSE;
+		state = INIT;
+		previous_state = INIT;
+		entrance = (previous_state != state)?TRUE:FALSE;
 		previous_state = state;
+
 		switch(state)
 		{
 			case(INIT):
 				if(entrance)
 				{
-					printf("%d", state);
-					HAL_Init();
-					BSP_GPIO_enable();
-					BSP_UART_init(UART2_ID,115200);
-					BSP_SYS_set_std_usart(UART2_ID, UART2_ID, UART2_ID);
-					BSP_systick_add_callback_function(&process_ms);
+
 					SERVO_init();
 					CAPTEUR_init();
 					motor_init();
 					nfc_init();
 					ILI9341_Init();
+					printf("%d", state);
 					setClock();
 				}
-
-					break;
+				state = ATTENTE_CARTE;
+				break;
 			case(ATTENTE_CARTE):
-				if(entrance)printf("%d", state);
-
+				if(entrance)
+				{
+					printf("%d", state);
+				}
 				if(!MOUSTACHE_carte_presente())
+				{
 					state = ATTENTE_CARTE;
-				else{
+				}else{
 					motor_insertCarte();
 					do{
 						waitTag();
 					}while(!receiveTag());
 					motor_stopMotor();
-					FLASH_write_UID(getTag(),timeToHex());
+					uint64_t UID;
+					UID = getTag();
+					uint8_t time = timeToHex();
+					FLASH_write_UID(UID,time);
 					state = DISTRIBUTION_BALLE;
 				}
 				break;
@@ -151,4 +166,5 @@ int main(void)
 		}
 
 	}
+
 }

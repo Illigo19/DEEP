@@ -10,7 +10,7 @@
 #include <string.h>
 
 #define BUFFER_SIZE 15
-char buffer[BUFFER_SIZE];
+static char buffer[BUFFER_SIZE] = {0};
 static int b_tagReceive = 0;
 
 void nfc_init(){
