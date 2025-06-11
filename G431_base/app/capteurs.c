@@ -25,13 +25,9 @@ int MOUSTACHE_carte_presente()
 
 int MOUSTACHE_balle_presente()
 {
-	if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5)){
-		return 0;
-	}
-	else
-	{
-		return 1;
-	}
+	return !HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5);
+
+
 }
 
 
