@@ -73,8 +73,11 @@ void process_ms(void)
   */
 int main(void)
 {
-	static state_e state;
-	static state_e previous_state;
+	static state_e state = INIT ;
+	static state_e previous_state  = INIT ;
+	static bool_e prev_carte_attente = FALSE;
+	static bool_e prev_carte_distribution = FALSE;
+	static int curr_carte;
 	bool_e entrance;
 	HAL_Init();
 	BSP_GPIO_enable();
@@ -84,48 +87,52 @@ int main(void)
 
 	while (1)
 	{
-		state = INIT;
-		previous_state = INIT;
 		entrance = (previous_state != state)?TRUE:FALSE;
 		previous_state = state;
-
 		switch(state)
 		{
 			case(INIT):
-				if(entrance)
-				{
+				SERVO_init();
+				CAPTEUR_init();
+				motor_init();
+				nfc_init();
+				ILI9341_Init();
+				printf("%d", state);
+				setClock();
 
-					SERVO_init();
-					CAPTEUR_init();
-					motor_init();
-					nfc_init();
-					ILI9341_Init();
-					printf("%d", state);
-					setClock();
-				}
 				state = ATTENTE_CARTE;
 				break;
-			case(ATTENTE_CARTE):
-				if(entrance)
-				{
-					printf("%d", state);
-				}
-				if(!MOUSTACHE_carte_presente())
-				{
-					state = ATTENTE_CARTE;
-				}else{
-					motor_insertCarte();
-					do{
-						waitTag();
-					}while(!receiveTag());
-					motor_stopMotor();
-					uint64_t UID;
+
+			case ATTENTE_CARTE:
+			{
+			    bool_e curr_carte = MOUSTACHE_carte_presente();
+
+			    if (entrance)
+			        printf("%d", state);
+
+
+			    if (!prev_carte_attente && curr_carte)
+			    {
+			        motor_insertCarte();
+			        do {
+			            waitTag();
+			        } while (!receiveTag());
+			        motor_stopMotor();
+			        uint64_t UID;
 					UID = getTag();
-					uint8_t time = timeToHex();
-					FLASH_write_UID(UID,time);
-					state = DISTRIBUTION_BALLE;
-				}
-				break;
+			        uint8_t time = timeToHex();
+			        FLASH_write_UID(UID, time);
+
+			        state = DISTRIBUTION_BALLE;
+			    }
+			    else{
+			    	state = ATTENTE_CARTE;
+			    }
+			    prev_carte_attente = curr_carte;
+			}
+			break;
+
+
 			case(DISTRIBUTION_BALLE):
 				if(entrance){
 					printf("%d", state);
@@ -138,6 +145,7 @@ int main(void)
 					state = DISTRIBUTION_BALLE;
 				}
 				break;
+
 			case(ATTENTE_BALLE):
 				if(entrance){
 					printf("%d", state);
@@ -150,19 +158,22 @@ int main(void)
 					state = DISTRIBUTION_CARTE;
 				}
 				break;
+
 			case(DISTRIBUTION_CARTE):
+				curr_carte = MOUSTACHE_carte_presente();
 				if(entrance){
 					printf("%d", state);
 					motor_retourCarte();
 				}
-				if(MOUSTACHE_carte_presente()){
+				if(prev_carte_distribution && !curr_carte){
 					motor_stopMotor();
 					state = ATTENTE_CARTE;
 				}
 				else{
 					state = DISTRIBUTION_CARTE;
 				}
-
+				prev_carte_distribution = curr_carte;
+				break;
 		}
 
 	}
