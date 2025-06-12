@@ -28,6 +28,7 @@
 #include "flash.h"
 #include "clock.h"
 #include "nfc.h"
+#include "ecran.h"
 #include <stdio.h>
 #include <inttypes.h>
 
@@ -85,10 +86,13 @@ int main(void)
 	BSP_SYS_set_std_usart(UART2_ID, UART2_ID, UART2_ID);
 	BSP_systick_add_callback_function(&process_ms);
 
+
 	while (1)
 	{
 		entrance = (previous_state != state)?TRUE:FALSE;
 		previous_state = state;
+
+
 		switch(state)
 		{
 			case(INIT):
@@ -97,20 +101,22 @@ int main(void)
 				motor_init();
 				nfc_init();
 				ILI9341_Init();
+				ecranBienvenue();
 				printf("%d", state);
 				setClock();
 
 				state = ATTENTE_CARTE;
+
 				break;
 
 			case ATTENTE_CARTE:
 			{
 			    bool_e curr_carte = MOUSTACHE_carte_presente();
 
-			    if (entrance)
+			    if (entrance){
 			        printf("%d", state);
-
-
+			        ecranAttenteCarte();
+			    }
 			    if (!prev_carte_attente && curr_carte)
 			    {
 			        motor_insertCarte();
@@ -121,9 +127,10 @@ int main(void)
 			        uint64_t UID;
 					//UID = getTag();
 			        uint8_t time = timeToHex();
-			        FLASH_write_UID(UID, time);
+			        //FLASH_write_UID(UID, time);
 
 			        state = DISTRIBUTION_BALLE;
+			        ecranPartie();
 			    }
 			    else{
 			    	state = ATTENTE_CARTE;
@@ -134,8 +141,10 @@ int main(void)
 
 
 			case(DISTRIBUTION_BALLE):
+
 				if(entrance){
 					printf("%d", state);
+					ecranBalleRecup();
 					SERVO_set_position(POSITION_OUVERT);
 				}
 				if(!MOUSTACHE_balle_presente())
@@ -149,6 +158,7 @@ int main(void)
 			case(ATTENTE_BALLE):
 				if(entrance){
 					printf("%d", state);
+					ecranAttenteBalle();
 					SERVO_set_position(POSITION_FERME);
 				}
 				if(!MOUSTACHE_balle_presente())
@@ -160,14 +170,17 @@ int main(void)
 				break;
 
 			case(DISTRIBUTION_CARTE):
+
 				curr_carte = MOUSTACHE_carte_presente();
 				if(entrance){
 					printf("%d", state);
+					ecranCarteRecup();
 					motor_retourCarte();
 				}
 				if(prev_carte_distribution && !curr_carte){
 					motor_stopMotor();
 					state = ATTENTE_CARTE;
+
 				}
 				else{
 					state = DISTRIBUTION_CARTE;
