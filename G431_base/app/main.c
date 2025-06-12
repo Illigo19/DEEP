@@ -119,7 +119,7 @@ int main(void)
 			        } while (!receiveTag());
 			        motor_stopMotor();
 			        uint64_t UID;
-					UID = getTag();
+					//UID = getTag();
 			        uint8_t time = timeToHex();
 			        FLASH_write_UID(UID, time);
 
