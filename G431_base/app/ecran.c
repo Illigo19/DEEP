@@ -17,11 +17,13 @@ void ecranInit(){
 void ecranBienvenue(){
 	ecranInit();
 	ILI9341_Puts(60,60, "Bienvenue chez Rent a Ball",&Font_11x18, ILI9341_COLOR_BLUE, ILI9341_COLOR_WHITE);
+	ILI9341_Puts(60,60, "Merci de saisir l'heure",&Font_11x18, ILI9341_COLOR_BLUE, ILI9341_COLOR_WHITE);
 }
 
 void ecranAttenteCarte(){
 	ecranInit();
-	ILI9341_Puts(60,60, "En attente de la carte",&Font_11x18, ILI9341_COLOR_BLUE, ILI9341_COLOR_WHITE);
+	ILI9341_Puts(60,60, "Bienvenue chez Rent a Ball",&Font_11x18, ILI9341_COLOR_BLUE, ILI9341_COLOR_WHITE);
+	ILI9341_Puts(60,100, "En attente de la carte",&Font_11x18, ILI9341_COLOR_BLUE, ILI9341_COLOR_WHITE);
 }
 
 void ecranAttenteBalle(){
@@ -36,7 +38,7 @@ void ecranPartie(){
 
 void ecranBalleRecup(){
 	ecranInit();
-	ILI9341_Puts(60,60, "La carte a ete inseree ! Merci, vous pouvez prendre la balle", &Font_11x18, ILI9341_COLOR_GREEN, ILI9341_COLOR_WHITE);
+	ILI9341_Puts(60,60, "La carte a ete inseree ! Vous pouvez prendre la balle", &Font_11x18, ILI9341_COLOR_GREEN, ILI9341_COLOR_WHITE);
 }
 
 void ecranCarteRecup(){
@@ -45,7 +47,6 @@ void ecranCarteRecup(){
 }
 
 void ecranEnService(){
-	ecranInit();
 	ILI9341_Puts(60,60, "Desole, la balle est deja en utilisation", &Font_11x18, ILI9341_COLOR_BLUE, ILI9341_COLOR_WHITE);
 }
 

@@ -51,10 +51,11 @@ int receiveTag(){
  *
  * @return La valeur du tag NFC au format `unsigned long long`.
  */
-/*unsigned long long getTag(){
-	u64_ret = strtoull(buffer, NULL, 16);
-	return u64_ret;
-}*/
+void getTag(uint32_t *hi, uint32_t *lo) {
+    uint64_t v = strtoull(buffer, NULL, 16);
+    *hi = (uint32_t)(v >> 32);
+    *lo = (uint32_t)(v & 0xFFFFFFFFUL);
+}
 
 /**
  * @brief Attend la réception d’un tag NFC via l’UART.

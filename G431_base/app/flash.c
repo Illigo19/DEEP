@@ -39,18 +39,16 @@ uint8_t FLASH_cursor(void);
 void FLASH_set_cursor(uint8_t);
 
 
-void FLASH_write_UID(uint64_t UID, uint8_t date)
+void FLASH_write_UID(uint32_t uid_hi, uint32_t uid_lo, uint8_t date)
 {
-	 uint64_t u64_combined = 0;
-	 uint8_t u8_cursor;
+    uint64_t UID64 = ((uint64_t)uid_hi << 32) | uid_lo;
+    uint64_t u64_combined = (UID64 << 8) & 0xFFFFFFFFFFFFFF00ULL;
+    u64_combined |= (uint64_t)date;
 
-	 u64_combined =( UID << 8) & 0xffffffffffffff00;
-	 u64_combined |= ((uint64_t)date) & 0xff;
-	 u8_cursor = FLASH_cursor();
-	 BSP_FLASH_set_doubleword(u8_cursor, u64_combined);
-	 u8_cursor++;
-	 FLASH_set_cursor(u8_cursor);
-
+    uint8_t cursor = FLASH_cursor();
+    BSP_FLASH_set_doubleword(cursor, u64_combined);
+    cursor++;
+    FLASH_set_cursor(cursor);
 }
 
 uint8_t FLASH_cursor()

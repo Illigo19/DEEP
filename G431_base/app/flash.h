@@ -20,6 +20,6 @@
  * @param UID Identifiant 64 bits � stocker.
  * @param date Date 8 bits
  */
-void FLASH_write_UID(uint64_t UID, uint8_t date);
+void FLASH_write_UID(uint32_t uid_hi, uint32_t uid_lo, uint8_t date);
 
 #endif /* FLASH_H_ */

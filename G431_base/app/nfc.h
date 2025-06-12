@@ -32,7 +32,7 @@ int receiveTag(void);
  *
  * @return La valeur du tag sous forme d'entier non signé 64 bits.
  */
-uint64_t getTag(void);
+void getTag(uint32_t *hi, uint32_t *lo);
 
 /**
  * @brief Attend et traite la réception d’un tag NFC.
